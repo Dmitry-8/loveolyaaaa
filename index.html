@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Для Олечки ❤️</title>
+<style>
+body{margin:0;font-family:sans-serif;background:#ffc0cb;display:flex;justify-content:center;align-items:center;height:100vh;text-align:center;overflow:hidden;transition:filter 0.5s}
+.page{display:none;flex-direction:column;align-items:center;max-width:700px;padding:20px}
+.active{display:flex}
+
+h1,h2{color:#ff1493;animation:pulseText 2s infinite}
+@keyframes pulseText{0%{transform:scale(1)}50%{transform:scale(1.05)}100%{transform:scale(1)}}
+
+p,.frame{opacity:0;transform:translateY(20px);transition:all 0.8s ease}
+.page.active p,.page.active .frame{opacity:1;transform:translateY(0)}
+
+.heart-btn{width:120px;height:120px;background:#ff1493;clip-path:polygon(50% 90%,0 40%,20% 0,50% 20%,80% 0,100% 40%);display:flex;justify-content:center;align-items:center;color:#fff;font-weight:bold;cursor:pointer;margin-top:20px;opacity:0;transform:scale(0.8);transition:all 0.6s}
+.page.active .heart-btn{opacity:1;transform:scale(1)}
+
+.frame{border:3px solid pink;padding:15px;border-radius:15px;color:#555;background:#fff}
+.small{font-size:12px;color:#999}
+.pulse{animation:pulse 1s infinite}
+@keyframes pulse{0%{transform:scale(1)}50%{transform:scale(1.1)}100%{transform:scale(1)}}
+</style>
+</head>
+<body>
+
+<div id="p1" class="page active">
+<h1 class="type" data-text="Любимая, с 16 летием тебя!"></h1>
+<div class="heart-btn" onclick="next(2)">Жми!</div>
+</div>
+
+<div id="p2" class="page">
+<h1 class="type" data-text="С днём рождения, Олечка!"></h1>
+<p class="type" data-text="Любимая, и вот тебе уже 16 лет) теперь снова старше меня🥺но я не унываю! Ведь у меня есть лучшая жена в мире!❤️"></p>
+<div class="heart-btn" onclick="next(3)">Жми!</div>
+</div>
+
+<div id="p3" class="page">
+<div style="font-size:40px;margin-bottom:15px">❤️❤️❤️</div>
+<div class="frame type" data-text="От всего сердца хочу поздравить тебя, моя самая самая любимая, с этим прекрасным днем! Конечно любимая, хочу пожелать тебе исполнения всего всего что ты хочешь❤️, и чтоб с этим не возникало трудностей! Чтобы каждый денек приносил тебе радость, удовольствие, и конечно же поднимал тебе настроение!"></div>
+<div class="heart-btn" onclick="next(4)">:3</div>
+</div>
+
+<div id="p4" class="page">
+<div class="frame type" data-text="Любимая, я бы очень хотел провести этот прекрасный денек с тобой, но к сожалению мы очень далеко друг от друга😞но знай, подарочек для тебя уже готов, который я отдам тебе при первой же нашей встрече!"></div>
+<div class="heart-btn" onclick="next(5)">-></div>
+</div>
+
+<div id="p5" class="page">
+<h2 class="type" data-text="Самой любимой!"></h2>
+<h2 class="type" data-text="Самой красивой!"></h2>
+<h2 class="type" data-text="Самой лучшей!"></h2>
+<h2 class="type" data-text="Самому лучшему игроку в бравл))"></h2>
+<h2 class="type" data-text="Самой тихой (нет)"></h2>
+<h2 class="type" data-text="Самой милой!"></h2>
+<p class="small type" data-text="Моей любимой Олечке"></p>
+<div class="heart-btn" onclick="next(6)">-></div>
+</div>
+
+<div id="p6" class="page">
+<div class="frame type" data-text="Любимая, какое бы расстояние не было между нами, знай, что для меня ты ближе всех кто рядом, и я очень сильно люблю тебя. Впереди у нас очень много нового) много прогулок, поездок, игр, отдыха, развлечений, и так далее) Жизнь - она одна, и я очень хочу провести её с тобой❤️. Люблю тебя😘"></div>
+<div class="heart-btn pulse" style="background:red" onclick="endScene()">Хмм..</div>
+</div>
+
+<script>
+function typeText(el, text, i=0){
+ if(i<text.length){
+  el.innerHTML+=text[i];
+  setTimeout(()=>typeText(el,text,i+1),20);
+ }
+}
+
+function startTyping(page){
+ page.querySelectorAll('.type').forEach(el=>{
+  let text=el.getAttribute('data-text');
+  el.innerHTML='';
+  typeText(el,text);
+ });
+}
+
+function blurTransition(cb){
+ document.body.style.filter='blur(10px)';
+ setTimeout(()=>{
+  cb();
+  document.body.style.filter='blur(0px)';
+ },500);
+}
+
+function next(n){
+ blurTransition(()=>{
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  let page=document.getElementById('p'+n);
+  page.classList.add('active');
+  startTyping(page);
+  if(n==3) hearts();
+  if(n==4) planes();
+ });
+}
+
+startTyping(document.getElementById('p1'));
+
+function hearts(){
+ let count=0;
+ let interval=setInterval(()=>{
+  for(let i=0;i<5;i++) createHeart();
+  count++;
+  if(count>=3) clearInterval(interval);
+ },1000);
+}
+
+function createHeart(){
+ let h=document.createElement('div');
+ h.innerHTML='❤️';
+ h.style.position='absolute';
+ h.style.left=(Math.random()>0.5?0:window.innerWidth)+'px';
+ h.style.top='0px';
+ h.style.fontSize=(16+Math.random()*20)+'px';
+ document.body.appendChild(h);
+ let vx=Math.random()*4-2;
+ let vy=2;
+ let g=0.15;
+ let rotate=Math.random()*360;
+ let fall=setInterval(()=>{
+  vy+=g;
+  h.style.top=(h.offsetTop+vy)+'px';
+  h.style.left=(h.offsetLeft+vx)+'px';
+  rotate+=3;
+  h.style.transform=`rotate(${rotate}deg) scale(${1+Math.sin(rotate/20)*0.2})`;
+  if(h.offsetTop>window.innerHeight){clearInterval(fall);h.remove();}
+ },30);
+}
+
+function planes(){
+ for(let i=0;i<20;i++){
+  setTimeout(()=>{
+   let h=document.createElement('div');
+   h.innerHTML='✈️';
+   h.style.position='absolute';
+   h.style.left=Math.random()*100+'%';
+   h.style.top='-20px';
+   document.body.appendChild(h);
+   let fall=setInterval(()=>{
+    h.style.top=(h.offsetTop+5)+'px';
+    if(h.offsetTop>window.innerHeight){clearInterval(fall);h.remove();}
+   },30);
+  },i*150);
+ }
+}
+
+function endScene(){
+ document.body.innerHTML='';
+ document.body.style.background='black';
+ let text=document.createElement('h1');
+ text.innerText='Конец!';
+ text.style.color='#ff69b4';
+ text.style.marginTop='40vh';
+ document.body.appendChild(text);
+ let total=0;
+ let fill=setInterval(()=>{
+  for(let i=0;i<20;i++){
+   let h=document.createElement('div');
+   h.innerHTML='❤️';
+   h.style.position='absolute';
+   h.style.left=Math.random()*100+'%';
+   h.style.top='-20px';
+   h.style.fontSize=(20+Math.random()*20)+'px';
+   document.body.appendChild(h);
+   let fall=setInterval(()=>{h.style.top=(h.offsetTop+6)+'px';},20);
+  }
+  total+=20;
+  if(total>300){
+   text.remove();
+   clearInterval(fill);
+   setTimeout(()=>{document.body.innerHTML='';document.body.style.background='black';},2000);
+  }
+ },200);
+}
+</script>
+
+</body>
+</html>
